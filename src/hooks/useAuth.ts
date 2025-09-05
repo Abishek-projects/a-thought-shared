@@ -83,34 +83,19 @@ export const useAuthProvider = () => {
     try {
       setLoading(true);
       
-      // First, get the user's email from their username
-      const { data: profileData, error: profileError } = await supabase
-        .from('user_profiles')
-        .select('id')
-        .eq('username', username)
-        .single();
-
-      if (profileError || !profileData) {
-        return { error: { message: 'Username not found' } as AuthError };
-      }
-
-      // Get the user's email from auth.users
-      const { data: userData, error: userError } = await supabase.auth.admin.getUserById(profileData.id);
-      
-      if (userError || !userData.user?.email) {
-        return { error: { message: 'User not found' } as AuthError };
-      }
+      // Create email from username for simple authentication
+      const email = `${username}@temp.local`;
 
       // Sign in with email and password
       const { error } = await supabase.auth.signInWithPassword({
-        email: userData.user.email,
+        email,
         password,
       });
 
       if (error) {
         toast({
           title: "Sign in failed",
-          description: error.message,
+          description: "Invalid username or password",
           variant: "destructive"
         });
         return { error };
