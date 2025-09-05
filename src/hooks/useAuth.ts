@@ -86,13 +86,18 @@ export const useAuthProvider = () => {
       // Create email from username for simple authentication
       const email = `${username}@temp.local`;
 
+      console.log('Attempting to sign in with:', { username, email });
+
       // Sign in with email and password
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
+      console.log('Signin response:', { data, error });
+
       if (error) {
+        console.error('Signin error:', error);
         toast({
           title: "Sign in failed",
           description: "Invalid username or password",
@@ -108,6 +113,7 @@ export const useAuthProvider = () => {
 
       return { error: null };
     } catch (error) {
+      console.error('Signin catch error:', error);
       const authError = { message: 'An unexpected error occurred' } as AuthError;
       toast({
         title: "Sign in failed",
@@ -127,7 +133,9 @@ export const useAuthProvider = () => {
       // Create a temporary email using username
       const email = `${username}@temp.local`;
 
-      const { error } = await supabase.auth.signUp({
+      console.log('Attempting to sign up with:', { username, email });
+
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -137,7 +145,10 @@ export const useAuthProvider = () => {
         }
       });
 
+      console.log('Signup response:', { data, error });
+
       if (error) {
+        console.error('Signup error:', error);
         toast({
           title: "Sign up failed",
           description: error.message,
@@ -153,6 +164,7 @@ export const useAuthProvider = () => {
 
       return { error: null };
     } catch (error) {
+      console.error('Signup catch error:', error);
       const authError = { message: 'An unexpected error occurred' } as AuthError;
       toast({
         title: "Sign up failed",

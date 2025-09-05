@@ -18,10 +18,16 @@ export default function LoginForm() {
       return;
     }
 
+    console.log('Form submitted:', { username: username.trim(), isSignUp });
+
     if (isSignUp) {
-      await signUp(username.trim(), password);
+      console.log('Calling signUp function');
+      const result = await signUp(username.trim(), password);
+      console.log('SignUp result:', result);
     } else {
-      await signIn(username.trim(), password);
+      console.log('Calling signIn function');
+      const result = await signIn(username.trim(), password);
+      console.log('SignIn result:', result);
     }
   };
 
