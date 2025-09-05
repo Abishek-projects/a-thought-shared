@@ -1,29 +1,14 @@
-import { useState } from "react";
-import LoginForm from "./components/LoginForm";
-import Dashboard from "./components/Dashboard";
+import { AuthProvider } from "./components/AuthProvider";
+import { MainApp } from "./components/MainApp";
+import { Toaster } from "./components/ui/toaster";
+import "./App.css";
 
 function App() {
-  const [user, setUser] = useState<{ username: string } | null>(null);
-  const [isSignUp, setIsSignUp] = useState(false);
-
-  const handleLogin = (username: string) => {
-    setUser({ username });
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-  };
-
-  if (user) {
-    return <Dashboard user={user} onLogout={handleLogout} />;
-  }
-
   return (
-    <LoginForm 
-      onLogin={handleLogin}
-      isSignUp={isSignUp}
-      onToggleMode={() => setIsSignUp(!isSignUp)}
-    />
+    <AuthProvider>
+      <MainApp />
+      <Toaster />
+    </AuthProvider>
   );
 }
 
