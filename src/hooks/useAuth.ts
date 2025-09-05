@@ -84,7 +84,7 @@ export const useAuthProvider = () => {
       setLoading(true);
       
       // Create email from username for simple authentication
-      const email = `${username}@example.com`;
+      const email = `${username.toLowerCase()}@gmail.com`;
 
       console.log('Attempting to sign in with:', { username, email });
 
@@ -130,8 +130,8 @@ export const useAuthProvider = () => {
     try {
       setLoading(true);
 
-      // Create a valid email using username
-      const email = `${username}@example.com`;
+      // Create a valid email using username with Gmail domain
+      const email = `${username.toLowerCase()}@gmail.com`;
 
       console.log('Attempting to sign up with:', { username, email });
 
