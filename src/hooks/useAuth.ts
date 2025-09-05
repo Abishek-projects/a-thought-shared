@@ -141,7 +141,8 @@ export const useAuthProvider = () => {
         options: {
           data: {
             username: username,
-          }
+          },
+          emailRedirectTo: undefined
         }
       });
 
@@ -157,10 +158,35 @@ export const useAuthProvider = () => {
         return { error };
       }
 
-      toast({
-        title: "Account created!",
-        description: `Welcome ${username}! You can now start tracking your expenses.`,
-      });
+      // If signup successful but requires email confirmation, try to sign in immediately
+      if (data.user && !data.session) {
+        console.log('User created but needs confirmation, attempting immediate signin...');
+        
+        // Wait a moment then try to sign in
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        
+        if (signInError && signInError.message.includes('email_not_confirmed')) {
+          toast({
+            title: "Account created!",
+            description: `Account created for ${username}. Please check your email for confirmation, or contact support to disable email confirmation.`,
+          });
+        } else if (signInData.session) {
+          toast({
+            title: "Account created and signed in!",
+            description: `Welcome ${username}! You're now signed in.`,
+          });
+        }
+      } else {
+        toast({
+          title: "Account created!",
+          description: `Welcome ${username}! You can now start tracking your expenses.`,
+        });
+      }
 
       return { error: null };
     } catch (error) {
