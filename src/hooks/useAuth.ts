@@ -124,23 +124,6 @@ export const useAuthProvider = () => {
     try {
       setLoading(true);
 
-      // Check if username already exists
-      const { data: existingUser } = await supabase
-        .from('user_profiles')
-        .select('username')
-        .eq('username', username)
-        .single();
-
-      if (existingUser) {
-        const error = { message: 'Username already exists' } as AuthError;
-        toast({
-          title: "Sign up failed",
-          description: error.message,
-          variant: "destructive"
-        });
-        return { error };
-      }
-
       // Create a temporary email using username
       const email = `${username}@temp.local`;
 
