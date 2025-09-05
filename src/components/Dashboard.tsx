@@ -3,7 +3,7 @@ import { ExpenseList } from './ExpenseList';
 import { ExpenseSummary } from './ExpenseSummary';
 import { ExpenseChart } from './ExpenseChart';
 import { Header } from './Header';
-import { useExpenses } from '@/hooks/useExpenses';
+import { useSupabaseExpenses } from '@/hooks/useSupabaseExpenses';
 import { Toaster } from '@/components/ui/sonner';
 
 interface DashboardProps {
@@ -12,7 +12,7 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ user, onLogout }: DashboardProps) {
-  const { expenses, loading, addExpense, deleteExpense, getSummary } = useExpenses();
+  const { expenses, loading, addExpense, deleteExpense, getSummary } = useSupabaseExpenses();
   const summary = getSummary();
 
   if (loading) {

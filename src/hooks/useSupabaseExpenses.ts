@@ -60,7 +60,40 @@ export const useSupabaseExpenses = () => {
 
   useEffect(() => {
     loadExpenses();
-  }, [loadExpenses]);
+
+    // Set up real-time subscription for expenses
+    if (user) {
+      const channel = supabase
+        .channel('expenses_changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'expenses',
+            filter: `user_id=eq.${user.id}`
+          },
+          (payload) => {
+            console.log('Real-time update:', payload);
+            
+            if (payload.eventType === 'INSERT') {
+              const newExpense = convertDbExpenseToExpense(payload.new as DatabaseExpense);
+              setExpenses(prev => [newExpense, ...prev.filter(e => e.id !== newExpense.id)]);
+            } else if (payload.eventType === 'DELETE') {
+              setExpenses(prev => prev.filter(e => e.id !== payload.old.id));
+            } else if (payload.eventType === 'UPDATE') {
+              const updatedExpense = convertDbExpenseToExpense(payload.new as DatabaseExpense);
+              setExpenses(prev => prev.map(e => e.id === updatedExpense.id ? updatedExpense : e));
+            }
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [loadExpenses, user]);
 
   // Add new expense
   const addExpense = useCallback(async (expenseData: Omit<Expense, 'id' | 'createdAt'>) => {
