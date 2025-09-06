@@ -132,18 +132,19 @@ export const ExpenseForm = ({ onAddExpense }: ExpenseFormProps) => {
 
         <Button 
           type="submit" 
-          className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-primary to-primary-glow hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200" 
+          className="w-full h-14 text-lg font-bold bg-gradient-to-r from-primary via-primary-glow to-accent hover:shadow-xl hover:shadow-primary/25 transform hover:scale-[1.02] transition-all duration-300 text-primary-foreground border-0" 
           disabled={isSubmitting || !amount || !description.trim()}
         >
           {isSubmitting ? (
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              Adding...
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              <span>Adding magic... ✨</span>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
-              <Plus className="h-5 w-5" />
-              Add Expense
+            <div className="flex items-center gap-3">
+              <Plus className="h-6 w-6" />
+              <span>💸 Add Expense</span>
+              <div className="ml-2 text-xl">🚀</div>
             </div>
           )}
         </Button>

@@ -37,10 +37,41 @@ export const ExpenseList = ({ expenses, onDeleteExpense }: ExpenseListProps) => 
 
   if (expenses.length === 0) {
     return (
-      <Card className="expense-card p-8 text-center">
-        <Receipt className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-        <h3 className="text-lg font-medium mb-2">No expenses yet</h3>
-        <p className="text-muted-foreground">Start by adding your first expense above!</p>
+      <Card className="expense-card p-8 text-center relative overflow-hidden">
+        {/* Background illustration effect */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="w-full h-full bg-gradient-to-br from-primary/20 via-accent/10 to-primary-glow/20" />
+        </div>
+        
+        <div className="relative">
+          {/* Fun illustration using emojis */}
+          <div className="text-6xl mb-4 animate-bounce">
+            💸
+          </div>
+          
+          <div className="mb-6">
+            <h3 className="text-2xl font-bold text-primary mb-2">💸 No expenses yet!</h3>
+            <p className="text-lg text-muted-foreground mb-4">
+              Start tracking your money today and take control of your finances ✨
+            </p>
+            <div className="flex justify-center gap-2 text-2xl">
+              <span className="animate-pulse">💰</span>
+              <span className="animate-pulse delay-100">📊</span>
+              <span className="animate-pulse delay-200">🎯</span>
+            </div>
+          </div>
+
+          <div className="bg-muted/30 rounded-2xl p-4 border border-dashed border-primary/30">
+            <p className="text-sm font-medium text-muted-foreground mb-2">
+              🌟 Pro tip: Start with small expenses like coffee or lunch!
+            </p>
+            <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
+              <span>👆</span>
+              <span>Use the form above to add your first expense</span>
+              <span>📝</span>
+            </div>
+          </div>
+        </div>
       </Card>
     );
   }

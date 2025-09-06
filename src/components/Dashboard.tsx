@@ -3,6 +3,7 @@ import { ExpenseList } from './ExpenseList';
 import { ExpenseSummary } from './ExpenseSummary';
 import { ExpenseChart } from './ExpenseChart';
 import { Header } from './Header';
+import { StreakTracker } from './StreakTracker';
 import { useSupabaseExpenses } from '@/hooks/useSupabaseExpenses';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -34,16 +35,19 @@ export default function Dashboard({ user, onLogout }: DashboardProps) {
         {/* Summary Cards */}
         <ExpenseSummary summary={summary} />
         
+        {/* Gamification Section */}
+        <StreakTracker expenses={expenses} />
+
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
           {/* Left Column - Add Expense Form */}
-          <div className="space-y-8">
+          <div className="xl:col-span-1 space-y-8">
             <ExpenseForm onAddExpense={addExpense} />
-            <ExpenseChart summary={summary} />
           </div>
           
-          {/* Right Column - Expense List */}
-          <div className="space-y-8">
+          {/* Right Column - Chart and List */}
+          <div className="xl:col-span-2 space-y-8">
+            <ExpenseChart summary={summary} />
             <ExpenseList 
               expenses={expenses} 
               onDeleteExpense={deleteExpense} 
